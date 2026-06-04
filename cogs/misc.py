@@ -89,12 +89,10 @@ def weather_getter(location):
 
 def fun_fact_getter():
     link = "https://uselessfacts.jsph.pl/random.json?language=en"
-    r = requests.get(link).json()
-    if r.status_code == 200:
-        randomfact = r["text"]
-        return randomfact
-    else:
+    r = requests.get(link)
+    if r.status_code != 200:
         return f"Error finding funfact. Statuscode:{r.status_code}"
+    return r.json()["text"]
 
 
 def trivia_getter():
@@ -155,7 +153,7 @@ def anime_random_getter(limit: int = 1):
     return imagelist
 
 
-async def duck():
+def duck():
     r = requests.get("https://random-d.uk/api/quack")
     if r.status_code == 200:
         data = r.json()
@@ -165,7 +163,7 @@ async def duck():
         return f"Something messed up.\nStatus code: {r.status_code}"
 
 
-async def shiba():
+def shiba():
     r = requests.get("https://shibe.online/api/shibes")
     if r.status_code == 200:
         data = r.json()
@@ -247,7 +245,7 @@ class Misc(commands.Cog):
     async def animal_image(self, ctx: discord.ApplicationContext):
         print("Getting animal pic")
         # Random Animal picture
-        randomlist = ["duck", "shiba,fox"]
+        randomlist = ["duck", "shiba", "fox"]
         random_function_choice = random.choices(randomlist)
 
         print(random_function_choice[0])
